@@ -149,7 +149,7 @@ for var in cat_features:
     else:
         less_value_features.append(var)
 
-from financial_score_card.A_score_card import BinBadRate,MergeBad0,BadRateEncoding
+from A_score_card.scorecard_functions_V4 import BinBadRate,MergeBad0,BadRateEncoding
 
 # （i）当取值<5时：如果每种类别同时包含好坏样本，无需分箱；如果有类别只包含好坏样本的一种，需要合并
 merge_bin_dict = {}  #存放需要合并的变量，以及合并方法
@@ -185,7 +185,7 @@ for col in more_value_features:
     br_encoding_dict[col] = br_encoding['bad_rate']
     num_features.append(col+'_br_encoding')
 
-from financial_score_card.A_score_card import ChiMerge,BadRateMonotone,AssignBin
+from A_score_card.scorecard_functions_V4 import ChiMerge,BadRateMonotone,AssignBin
 
 
 # （iii）对连续型变量进行分箱，包括（ii）中的变量
@@ -233,7 +233,7 @@ for col in num_features:
         var_bin_list.append(newVar)
     continous_merged_dict[col] = cutOff
 
-from financial_score_card.A_score_card import CalcWOE
+from A_score_card.scorecard_functions_V4 import CalcWOE
 import matplotlib.pyplot as plt
 
 '''
@@ -438,7 +438,9 @@ RFC = RandomForestClassifier()
 RFC_Model = RFC.fit(X,y)
 features_rfc = trainData[var_WOE_list].columns
 featureImportance = {features_rfc[i]:RFC_Model.feature_importances_[i] for i in range(len(features_rfc))}
+print(featureImportance)
 featureImportanceSorted = sorted(featureImportance.items(),key=lambda x: x[1], reverse=True)
+print(featureImportanceSorted)
 # we selecte the top 10 features
 features_selection = [k[0] for k in featureImportanceSorted[:8]]
 
